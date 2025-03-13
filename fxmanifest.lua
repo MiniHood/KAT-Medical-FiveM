@@ -18,7 +18,13 @@ client_scripts {
 server_scripts {
     'server/ErrorHandler.lua',
     'server/Threading.lua',
+    'server/PlayerHandler.lua',
     'server/Init.lua',
     'server/Network.lua',
     'server/*/*.lua'
+}
+
+shared_scripts {
+    '@pmc-callbacks/import.lua',
+    '@ox_lib/init.lua'
 }
