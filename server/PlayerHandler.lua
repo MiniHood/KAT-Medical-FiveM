@@ -60,3 +60,5 @@ Medical.PlayerHandler.RegisterCallbacks = function ()
         }
     end
 end
+
+Medical.ConfirmLoaded('PlayerHandler')
