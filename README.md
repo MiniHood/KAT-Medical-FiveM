@@ -6,12 +6,12 @@ You can follow progress [here](https://trello.com/b/zER58RU9/medical) through th
 ## Requirements
 - [ox-lib](https://github.com/overextended/ox_lib)
 - [ox-target](https://github.com/overextended/ox_target)
-- [pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks)
 
 ## Credits
 Entirely based off KAT 
-- https://docs.google.com/document/d/1YlY00qoL2gdrbOJJzi5aW19A3HqT7uXflszDYuK7h3M/edit?tab=t.0
-- https://steamcommunity.com/workshop/filedetails/?id=2020940806
+- [KAT Documents](https://docs.google.com/document/d/1YlY00qoL2gdrbOJJzi5aW19A3HqT7uXflszDYuK7h3M/edit?tab=t.0)
+- [KAT Mod](https://steamcommunity.com/workshop/filedetails/?id=2020940806)
+- [pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks )
 
 ## Disclaimer
 This is in development, and will not work as expected currently.
