@@ -14,7 +14,7 @@ Medical.WaitFor = function(key)
     local source = debug.getinfo(2, "S").source
     local filename = string.match(source, "([^/]+)%.lua$")
     while not Medical.IsLoaded(key) do
-        print('^5[Medical]^7 ' .. (filename .. '.lua' or "unknown") .. ' is waiting for module: ^3' .. key .. '^7')
+        print('^5[Medical]^7 <Client> ' .. (filename .. '.lua' or "unknown") .. ' is waiting for module: ^3' .. key .. '^7')
         Wait(0)
     end
     print('^5[Medical]^7 Module Loaded: ^2' .. key .. '^7 by ' .. (filename..'.lua' or 'unknown'))

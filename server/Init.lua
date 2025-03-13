@@ -13,11 +13,18 @@ Medical.WaitFor = function(key)
     local source = debug.getinfo(2, "S").source
     local filename = string.match(source, "([^/]+)%.lua$")
     while not Medical.IsLoaded(key) do
-        print('^5[Medical]^7 ' .. (filename .. '.lua' or "unknown") .. ' is waiting for module: ^3' .. key .. '^7')
+        print('^5[Medical]^7 <Server> ' .. (filename .. '.lua' or "unknown") .. ' is waiting for module: ^3' .. key .. '^7')
         Wait(0)
     end
     print('^5[Medical]^7 Module Loaded: ^2' .. key .. '^7 by ' .. (filename..'.lua' or 'unknown'))
     return Medical[key]
+end
+
+local SetupEventHandlers = function ()
+    for _, value in ipairs(Medical.Network.EventHandlers) do
+        RegisterServerEvent(value[1])
+        AddEventHandler(value[1], value[2])
+    end
 end
 
 local RequiredResources = {
@@ -30,11 +37,13 @@ local _ThrowError = function (m, c)
     print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m .. '^7')
 end
 
-local function OnPlayerConnecting(name, setKickReason, defferals)
+local function OnPlayerJoining(name, setKickReason, defferals)
     local player = source
-    if not player then _ThrowError("Failed to get player from connecting event") return end
+    if not player then _ThrowError("Failed to get player from OnPlayerJoining event") return end
     Medical.PlayerHandler.SetupPlayer(player)
 end
+
+
 
 local function Init()
     -- Check for required resources
@@ -54,14 +63,25 @@ local function Init()
     -- Load _ThrowError function
     _ThrowError = Medical.ErrorHandler.ThrowError
 
-    -- Create callback tables
+    -- Setup networking 
     Medical.Network.CreateCallbackTables()
+    Medical.Network.CreateEventHandlers()
 
-    -- Register call backs
+    -- Setup callbacks & events
     Medical.PlayerHandler.RegisterCallbacks()
-    
-    -- Add event handlers
-    AddEventHandler('playerConnecting', OnPlayerConnecting)
+    SetupEventHandlers()
+
+    -- Setup players
+    AddEventHandler('playerJoining', OnPlayerJoining)
+    local Players = GetPlayers()
+    if #Players > 0 then
+        print('Setting up connected players')
+        for index, value in ipairs(Players) do
+            -- Set up all the players that remain
+            print('Setting up [' .. value .. '] ' .. GetPlayerName(value))
+            Medical.PlayerHandler.SetupPlayer(value)
+        end
+    end
 
     print("Fully Loaded")
 end
