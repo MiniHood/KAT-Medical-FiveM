@@ -4,9 +4,9 @@ This is an attempted recreation of KAT medical system using FiveM LUA.
 You can follow progress [here](https://trello.com/b/zER58RU9/medical) through the trello
 
 ## Requirements
-[ox-lib](https://github.com/overextended/ox_lib)
-[ox-target](https://github.com/overextended/ox_target)
-[pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks)
+[ox-lib](https://github.com/overextended/ox_lib),
+[ox-target](https://github.com/overextended/ox_target),
+[pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks),
 
 ## Credits
 Entirely based off KAT 
