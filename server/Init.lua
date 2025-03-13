@@ -9,6 +9,13 @@ Medical.IsLoaded = function (key)
     end
     return false
 end
+Medical.WaitFor = function(key)
+    while not Medical.IsLoaded(key) do
+        print('^5[Medical]^7 Waiting for module: ^3' .. key .. '^7')
+        Wait(0)
+    end
+    print('^5[Medical]^7 Module Loaded: ^2' .. key .. '^7')
+end
 
 local RequiredResources = {
     'pmc-callbacks',
@@ -17,7 +24,7 @@ local RequiredResources = {
 }
 
 local _ThrowError = function (m, c)
-    print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m)
+    print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m .. '^7')
 end
 
 local function OnPlayerConnecting(name, setKickReason, defferals)
@@ -25,19 +32,6 @@ local function OnPlayerConnecting(name, setKickReason, defferals)
     if not player then _ThrowError("Failed to get player from connecting event") return end
     Medical.PlayerHandler.SetupPlayer(player)
 end
-
-function dump(o)
-    if type(o) == 'table' then
-       local s = '{ '
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. '['..k..'] = ' .. dump(v) .. ','
-       end
-       return s .. '} '
-    else
-       return tostring(o)
-    end
- end
 
 local function Init()
     -- Check for required resources
@@ -48,24 +42,17 @@ local function Init()
         end
     end
 
-    
-    while not Medical.IsLoaded('ErrorHandler') do
-        Wait(0)
-    end
+    -- Wait for all modules to load
+    Medical.WaitFor('ErrorHandler')
+    Medical.WaitFor('Network')
+    Medical.WaitFor('PlayerHandler')
+    Medical.WaitFor('Threading')
 
     -- Load _ThrowError function
     _ThrowError = Medical.ErrorHandler.ThrowError
 
-    while not Medical.IsLoaded('Network') do
-        Wait(0)
-    end
-
     -- Create callback tables
     Medical.Network.CreateCallbackTables()
-
-    while not Medical.IsLoaded('PlayerHandler') do
-        Wait(0)
-    end
 
     -- Register call backs
     Medical.PlayerHandler.RegisterCallbacks()

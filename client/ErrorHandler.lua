@@ -10,3 +10,5 @@ Medical.ErrorHandler.ThrowError = function (msg, critical)
 
     print('^5[Medical]^7 A ^3non-critical^7 ^8error^7 was encountered: ' .. msg)
 end
+
+Medical.ConfirmLoaded('ErrorHandler')

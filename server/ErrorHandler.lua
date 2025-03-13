@@ -6,7 +6,7 @@ Medical.ErrorHandler.ThrowError = function (msg, critical)
 
     -- If it's critical attempt to shut down all threads
     if critical then
-        print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. msg)
+        print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. msg .. '^7')
 
         -- Attempt to shut down all threads
         if Medical.Threading then
@@ -21,7 +21,7 @@ Medical.ErrorHandler.ThrowError = function (msg, critical)
 
 
     -- If the error is not critical, simply print it.
-    print('^5[Medical]^7 A ^3non-critical^7 ^8error^7 was encountered: ' .. msg)
+    print('^5[Medical]^7 A ^3non-critical^7 ^8error^7 was encountered: ' .. msg .. '^7')
 end
 
 Medical.ConfirmLoaded('ErrorHandler')

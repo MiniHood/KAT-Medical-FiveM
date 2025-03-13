@@ -8,3 +8,5 @@ Medical.PlayerHandler.RequestPlayerData = function (playerID)
     }
     return CallbackData
 end
+
+Medical.ConfirmLoaded('PlayerHandler')

@@ -43,3 +43,5 @@ Medical.Threading.TerminateThreadIdentifier = function (Identifier)
     TerminateThread(Medical.Threading.Threads[Identifier])
     Medical.Threading.Threads[Identifier] = nil
 end
+
+Medical.ConfirmLoaded('Threading')
