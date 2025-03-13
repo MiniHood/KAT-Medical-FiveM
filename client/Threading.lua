@@ -1,7 +1,7 @@
 Medical = Medical or {}
 Medical.Threading = Medical.Threading or {}
 Medical.Threading.Threads = Medical.Threading.Threads or {}
-
+Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
 
 
 local _ThrowError = Medical.ErrorHandler.ThrowError or function (m, c)
