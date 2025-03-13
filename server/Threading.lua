@@ -2,10 +2,11 @@ Medical = Medical or {}
 Medical.Threading = Medical.Threading or {}
 Medical.Threading.Threads = Medical.Threading.Threads or {}
 
-
+Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
 
 local _ThrowError = Medical.ErrorHandler.ThrowError or function (m, c)
     print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m)
+    StopResource(GetCurrentResourceName())
 end
 
 local function FindKeyByValue(list, value)

@@ -1,5 +1,7 @@
 Medical = Medical or {}
 Medical.ErrorHandler = Medical.ErrorHandler or {}
+Medical.Threading = Medical.Threading or Medical.WaitFor('Threading')
+
 
 Medical.ErrorHandler.ThrowError = function (msg, critical)
     if not msg and not critical then return end

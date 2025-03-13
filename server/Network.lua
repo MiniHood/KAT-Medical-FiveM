@@ -3,6 +3,8 @@ Medical.Network = Medical.Network or {}
 Medical.Network.PlayerHandler = Medical.Network.PlayerHandler or {}
 Medical.Network.PlayerHandler.Callbacks = Medical.Network.PlayerHandler.Callbacks or {}
 
+Medical.PlayerHandler = Medical.PlayerHandler or Medical.WaitFor('PlayerHandler')
+
 local ins = function (list, value)
     table.insert(list, value)
 end

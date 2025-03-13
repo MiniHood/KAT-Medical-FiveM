@@ -18,6 +18,10 @@ Players = {
 
 ]]
 
+Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
+
+Medical.Network = Medical.Network or Medical.WaitFor('Network')
+
 local _ThrowError = Medical.ErrorHandler.ThrowError or function (m, c)
     print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m)
 end
