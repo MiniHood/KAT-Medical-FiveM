@@ -7,6 +7,11 @@ author 'HowNiceOfYou'
 description 'Advanced medical system based on Arma 3\'s KAT medical system.'
 version '1.0.0'
 
+shared_scripts {
+    'shared/**.lua',
+    '@ox_lib/init.lua'
+}
+
 -- What to run
 client_scripts {
     'client/Init.lua',
@@ -16,10 +21,12 @@ client_scripts {
     'client/PlayerHandler.lua',
     'client/Network.lua',
 
-    'client/Baseplate/*.lua',
-    'client/Equipment/*.lua',
-    'client/Fluid/*.lua',
-    'client/Medicine/*.lua',
+    'client/Testing.lua',
+
+    'client/Baseplate/**.lua',
+    'client/Equipment/**.lua',
+    'client/Fluid/**.lua',
+    'client/Medicine/**.lua',
 }
 server_scripts {
     'server/Init.lua',
@@ -29,13 +36,10 @@ server_scripts {
     'server/PlayerHandler.lua',
     'server/Network.lua',
 
-    'server/Baseplate/*.lua',
-    'server/Equipment/*.lua',
-    'server/Fluid/*.lua',
-    'server/Medicine/*.lua',
-}
+    'server/Testing.lua',
 
-shared_scripts {
-    '@pmc-callbacks/import.lua',
-    '@ox_lib/init.lua'
+    'server/Baseplate/**.lua',
+    'server/Equipment/**.lua',
+    'server/Fluid/**.lua',
+    'server/Medicine/**.lua',
 }
