@@ -3,8 +3,7 @@ This is an attempted recreation of KAT medical system using FiveM LUA.
 
 [ox-target](https://github.com/overextended/ox_target) and [pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks) will be required resources.
 
-## Follow Progress
-https://trello.com/b/zER58RU9/medical
+You can follow progress [here](https://trello.com/b/zER58RU9/medical) through the trello
 
 ## Credits
 Entirely based off KAT 
