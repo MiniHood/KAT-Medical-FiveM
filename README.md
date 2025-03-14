@@ -1,7 +1,6 @@
 ## About
 This is an attempted recreation of KAT medical system using FiveM LUA.
-
-You can follow progress [here](https://trello.com/b/zER58RU9/medical) through the trello
+Want to follow progress or just get a general idea of future updates? Check out the [trello](https://trello.com/b/zER58RU9/medical)
 
 ## Requirements
 - [ox-lib](https://github.com/overextended/ox_lib)
