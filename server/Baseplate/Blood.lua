@@ -10,7 +10,7 @@ Medical.Blood.AddBlood = function (amt)
 
     local newData = Medical.PlayerHandler.GetPlayer(src)
     if not newData then Medical.ErrorHandler.ThrowError('Unable to obtain player from data for add blood function') return end
-    newData['Baseplate']['Blood']['BloodML'] += amt
+    newData['Baseplate']['Blood'] += amt
 
     if not Medical.PlayerHandler.EditPlayer(src, newData, true) then
         Medical.ErrorHandler.ThrowError('Failed to edit player data for add blood function.')
