@@ -20,6 +20,7 @@ Medical.WaitFor = function(key)
     print('^5[Medical]^7 Module Loaded: ^2' .. key .. '^7 by ' .. (filename..'.lua' or 'unknown'))
     return Medical[key]
 end
+
 local function Init()
 
     -- Wait for all modules to load
@@ -27,6 +28,7 @@ local function Init()
     Medical.WaitFor('Network')
     Medical.WaitFor('PlayerHandler')
     Medical.WaitFor('Threading')
+    Medical.WaitFor('HitDetection')
 
     AddEventHandler('onClientResourceStop', function(rN)
         if not rN == GetCurrentResourceName() then return end
@@ -34,6 +36,9 @@ local function Init()
         -- TODO: Add full clean up for everything
         Medical.Threading.TerminateAllThreads()
     end)
+
+    -- Now for base plate modules
+    Medical.HitDetection.FillBones()
 end
 
 Init()

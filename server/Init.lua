@@ -16,7 +16,7 @@ Medical.WaitFor = function(key)
         print('^5[Medical]^7 <Server> ' .. (filename .. '.lua' or "unknown") .. ' is waiting for module: ^3' .. key .. '^7')
         Wait(0)
     end
-    print('^5[Medical]^7 Module Loaded: ^2' .. key .. '^7 by ' .. (filename..'.lua' or 'unknown'))
+    print('^5[Medical]^7 Module Requested: ^2' .. key .. '^7 by ' .. (filename..'.lua' or 'unknown'))
     return Medical[key]
 end
 
@@ -59,6 +59,7 @@ local function Init()
     Medical.WaitFor('Network')
     Medical.WaitFor('PlayerHandler')
     Medical.WaitFor('Threading')
+    Medical.WaitFor('HitDetection')
 
     -- Load _ThrowError function
     _ThrowError = Medical.ErrorHandler.ThrowError
@@ -82,6 +83,7 @@ local function Init()
             Medical.PlayerHandler.SetupPlayer(value)
         end
     end
+
 
     print("Fully Loaded")
 end
