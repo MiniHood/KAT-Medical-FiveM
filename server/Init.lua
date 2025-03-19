@@ -70,6 +70,7 @@ local function Init()
 
     -- Setup callbacks & events
     Medical.PlayerHandler.RegisterCallbacks()
+    Medical.HitDetection.RegisterCallbacks()
     SetupEventHandlers()
 
     -- Setup players
