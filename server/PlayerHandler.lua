@@ -10,6 +10,13 @@ Players = {
     Player = {
         Baseplate = {
             Blood = 5000,
+            Bleeding = {
+                [threadID] = {
+                    amount = 2, -- 2ml
+                    delay = 1000, -- 1s per losing 2ml
+                    bone = "HEAD", -- Blood is being lost from the head
+                }
+            }
         }
     }
 }
@@ -17,7 +24,6 @@ Players = {
 ]]
 
 Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
-
 Medical.Network = Medical.Network or Medical.WaitFor('Network')
 
 local _ThrowError = Medical.ErrorHandler.ThrowError or function (m, c)
@@ -38,7 +44,8 @@ Medical.PlayerHandler.SetupPlayer = function(player)
     if Medical.PlayerHandler.DoesPlayerExist(player) then return end
     Medical.PlayerHandler.PlayerData[tostring(player)] = {
         Baseplate = {
-            Blood = 5000
+            Blood = 5000,
+            Bleeding = {}
         },
 
         Equipment = {},

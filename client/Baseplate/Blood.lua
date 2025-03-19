@@ -27,25 +27,39 @@ Players = {
             Blood = {
                 BloodML = 5000,
             }
+            
         }
     }
 }
 
 ]]
-
+-- Function for adding blood
+-- @param amt The amount you want to add
 Medical.Blood.AddBlood = function (amt)
     Medical.Network.Blood.AddBlood(amt)
 end
 
+-- Function for adding blood
+-- @param amt The amount you want to remove
 Medical.Blood.RemoveBlood = function (amt) 
     Medical.Network.Blood.RemoveBlood(amt)
 end
 
+-- Function to getting blood
+-- @param player Player to get blood amount from
 Medical.Blood.GetBlood = function (player)
     local PlayerData = Medical.PlayerHandler.RequestPlayerData(player)
     if not PlayerData then return end
     local Blood = PlayerData['Baseplate']['Blood']
     return Blood or 0
+end
+
+-- Function to add bleeding to a bone
+-- @param amount Amount of bleeding per tick
+-- @param delay Delay between each tick
+-- @param delay Source bone of the bleeding
+Medical.Blood.AddBleeding = function (amount, delay, bone)
+    Medical.Network.Blood.AddBleeding(amount, delay, bone)
 end
 
 Medical.ConfirmLoaded('Blood')
