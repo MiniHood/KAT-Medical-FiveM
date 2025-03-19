@@ -60,6 +60,13 @@ local function Init()
     Medical.WaitFor('PlayerHandler')
     Medical.WaitFor('Threading')
     Medical.WaitFor('HitDetection')
+    Medical.WaitFor('BloodPressure')
+    Medical.WaitFor('Glucose')
+    Medical.WaitFor('Heart')
+    Medical.WaitFor('Respiration')
+    Medical.WaitFor('Tempature')
+    Medical.WaitFor('Oxygen')
+    Medical.WaitFor('Pain')
 
     -- Load _ThrowError function
     _ThrowError = Medical.ErrorHandler.ThrowError

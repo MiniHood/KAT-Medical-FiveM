@@ -29,6 +29,13 @@ local function Init()
     Medical.WaitFor('PlayerHandler')
     Medical.WaitFor('Threading')
     Medical.WaitFor('HitDetection')
+    Medical.WaitFor('BloodPressure')
+    Medical.WaitFor('Glucose')
+    Medical.WaitFor('Heart')
+    Medical.WaitFor('Respiration')
+    Medical.WaitFor('Tempature')
+    Medical.WaitFor('Oxygen')
+    Medical.WaitFor('Pain')
 
     AddEventHandler('onClientResourceStop', function(rN)
         if not rN == GetCurrentResourceName() then return end
