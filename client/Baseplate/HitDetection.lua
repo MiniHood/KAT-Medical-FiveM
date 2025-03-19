@@ -1,6 +1,7 @@
 Medical = Medical or {}
 Medical.HitDetection = Medical.HitDetection or {}
 Medical.HitDetection.Bones = Medical.HitDetection.Bones or {}
+Medical.HitDetection.Events = Medical.HitDetection.Events or {}
 
 Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
 Medical.Network = Medical.Network or Medical.WaitFor('Network')
@@ -109,6 +110,43 @@ end
 Medical.HitDetection.GetLastSourceOfDamage = function ()
     return Medical.Network.HitDetection.GetLastSourceOfDamage()
 end
+5
+
+Medical.HitDetection.GotHit = function (victim, culprit, weapon, DamageType)
+    --[[
+    This function should determine the source of the damage, the bone, the bleeding, the implications of the damage
+    Including which organ it has hit etc etc, most of the behind the scenes magic will be done here
+    ]]
+    
+end
+
+Medical.HitDetection.SetupEvents = function ()
+    -- https://runtime.fivem.net/doc/events/client/
+    AddEventHandler('entityDamaged', Medical.HitDetection.Events.entityDamaged)
+end
+
+Medical.HitDetection.Events.entityDamaged = function (victim, culprit, weapon, baseDamage)
+    -- Base damage is always 0 for some reason
+    -- If we cannot convert the weapon to a vehicle or weapon
+    -- then we assume it's a vehicle, limitations stop us from checking the 
+    -- Type of vehicle etc that's hit us, we could be hacky and check the nearest
+    -- car but that'll cause issues down the road
+
+
+    -- Types: Vehicle, Weapon, Unknown
+    local DamageType
+
+    if GetWeapontypeModel(weapon) == 0 and GetEntityModel(weapon) == 0 then
+        DamageType = 'Vehicle'
+    elseif GetWeapontypeModel(weapon) ~= 0 then
+        DamageType = 'Weapon'
+    else
+        DamageType = 'Unknown'
+    end
+
+    Medical.HitDetection.GotHit(victim, culprit, weapon, DamageType)
+end
+
 
 function dump(o)
     if type(o) == 'table' then
@@ -123,15 +161,19 @@ function dump(o)
     end
  end
 
+ /*
 AddEventHandler('gameEventTriggered', function(eventName, eventData)
     if eventName == 'CEventNetworkEntityDamage' then
         local LocalPed = PlayerPedId()
         local IsValid, BoneHit = GetPedLastDamageBone(LocalPed)
+
+        Medical.HitDetection.GotHit(IsValid, BoneHit, Medical.HitDetection.GetLastSourceOfDamage(), )
 
         print("Bone hit: " .. (Medical.HitDetection.Bones[BoneHit] or 'None'))
         print("Hit by " .. Medical.HitDetection.GetLastSourceOfDamage())
         print("Entity damage info: ", eventName, dump(eventData))
     end
 end)
+*/
 
 Medical.ConfirmLoaded('HitDetection')

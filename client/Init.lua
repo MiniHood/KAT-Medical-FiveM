@@ -39,6 +39,7 @@ local function Init()
 
     -- Now for base plate modules
     Medical.HitDetection.FillBones()
+    Medical.HitDetection.SetupEvents()
 end
 
 Init()
