@@ -16,3 +16,19 @@ end, false)
 RegisterCommand('testbloodgetclient', function (_, args, raw)
     print(Medical.Blood.GetBlood(GetPlayerServerId(PlayerId())))
 end, false)
+
+RegisterCommand("spawnnpc", function(source, args, rawCommand)
+    local x, y, z = table.unpack(GetEntityCoords(GetPlayerPed(-1)))
+    local npcModel = "a_m_m_skater_01" 
+    RequestModel(npcModel)
+    while not HasModelLoaded(npcModel) do
+        Wait(500)
+    end
+    local npc = CreatePed(4, npcModel, x + 5, y + 5, z, 0.0, true, true)
+    SetPedAsEnemy(npc, true)
+    local weaponHash = GetHashKey("WEAPON_PISTOL")  
+    GiveWeaponToPed(npc, weaponHash, 250, false, true) 
+    TaskCombatPed(npc, GetPlayerPed(-1), 0, 16)
+    SetEntityInvincible(npc, false)
+    SetEntityVisible(npc, true)
+end, false)
