@@ -16,8 +16,14 @@ local function FindKeyByValue(list, value)
 	return nil
 end
 
+Medical.Threading.GetThread = function (Identifier)
+    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads') return end
+    return Medical.Threading.Threads[Identifier]
+end
+
 Medical.Threading.CreateThread = function (threadID, identifier)
     if not threadID then  _ThrowError('Argument of [' .. threadID .. '] passed to medical CreateThread was invalid') return end
+    if Medical.Threading.GetThread(identifier) then _ThrowError(identifier .. ' already exists in Medical.Threading.Threads') return end
     if not identifier then identifier = math.random(125451, 473487486967) end
     Medical.Threading.Threads[identifier] = threadID
     return identifier
@@ -39,9 +45,11 @@ Medical.Threading.TerminateThreadID = function (threadID)
 end
 
 Medical.Threading.TerminateThreadIdentifier = function (Identifier)
-    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads') return end
-    TerminateThread(Medical.Threading.Threads[Identifier])
+    local Thread = Medical.Threading.GetThread(Identifier)
+    if not Thread then return end
+    TerminateThread(Thread)
     Medical.Threading.Threads[Identifier] = nil
 end
+
 
 Medical.ConfirmLoaded('Threading')
