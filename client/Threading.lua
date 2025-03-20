@@ -17,7 +17,7 @@ local function FindKeyByValue(list, value)
 end
 
 Medical.Threading.GetThread = function (Identifier)
-    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads') return end
+    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads [GetThread-Client]') return end
     return Medical.Threading.Threads[Identifier]
 end
 

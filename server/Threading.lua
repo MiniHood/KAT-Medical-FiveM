@@ -17,10 +17,9 @@ local function FindKeyByValue(list, value)
 	return nil
 end
 
-Medical.Threading.CreateThread = function (threadID, identifier)
-    if not threadID then  _ThrowError('Argument of [' .. threadID .. '] passed to medical CreateThread was invalid') return end
+Medical.Threading.CreateThread = function (identifier)
     if not identifier then identifier = math.random(125451, 473487486967) end
-    Medical.Threading.Threads[identifier] = threadID
+    Medical.Threading.Threads[identifier] = true
     return identifier
 end
 
@@ -31,17 +30,27 @@ Medical.Threading.TerminateAllThreads = function ()
     end
 end
 
-Medical.Threading.TerminateThreadID = function (threadID)
-    if not threadID then _ThrowError('Argument passed to terminate thread id is invalid argument: ' .. threadID) return end
-    local Key = FindKeyByValue(Medical.Threading.Threads, threadID)
-    if not Key then _ThrowError('Failed to find key by value in Medical.Threading.Threads') return end
-    TerminateThread(Medical.Threading.Threads[Key])
-    Medical.Threading.Threads[Key] = nil
+Medical.Threading.GetThread = function (Identifier)
+    if not Medical.Threading.Threads[Identifier] then return nil end
+    return Medical.Threading.Threads[Identifier]
 end
 
+function dump(o)
+    if type(o) == 'table' then
+       local s = '{ '
+       for k,v in pairs(o) do
+          if type(k) ~= 'number' then k = '"'..k..'"' end
+          s = s .. '['..k..'] = ' .. dump(v) .. ','
+       end
+       return s .. '} '
+    else
+       return tostring(o)
+    end
+ end
+
+
 Medical.Threading.TerminateThreadIdentifier = function (Identifier)
-    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads') return end
-    TerminateThread(Medical.Threading.Threads[Identifier])
+    if not Medical.Threading.Threads[Identifier] then _ThrowError('Failed to find [' .. Identifier .. '] in Medical.Threading.Threads [TerminateThreadIdentifier]') print(dump(Medical.Threading.Threads)) return end
     Medical.Threading.Threads[Identifier] = nil
 end
 
