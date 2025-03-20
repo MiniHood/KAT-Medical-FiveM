@@ -15,5 +15,7 @@ Entirely based off KAT
 - [KAT Mod](https://steamcommunity.com/workshop/filedetails/?id=2020940806)
 - [pmc-callbacks](https://github.com/pitermcflebor/pmc-callbacks )
 
+- [BomberBoi](http://discordapp.com/users/430428805916786688) for the math and extra research into ballistics
+
 ## Disclaimer
 This is in development, and will not work as expected currently.
