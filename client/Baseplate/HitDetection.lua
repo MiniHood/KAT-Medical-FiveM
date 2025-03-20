@@ -8,6 +8,7 @@ Medical.HitDetection.AmmunationInformation = Medical.HitDetection.AmmunationInfo
 
 Medical.ErrorHandler = Medical.ErrorHandler or Medical.WaitFor('ErrorHandler')
 Medical.Network = Medical.Network or Medical.WaitFor('Network')
+Medical.Blood = Medical.Blood or Medical.WaitFor('Blood')
 
 local _ThrowError = Medical.ErrorHandler.ThrowError or function (m, c)
     print('^5[Medical]^7 A ^8critical^7 error was encountered: ' .. m)
@@ -105,6 +106,40 @@ Medical.HitDetection.FillWeaponHashes = function ()
 
     Medical.HitDetection.WeaponHashes = weaponHashes
 end
+
+local BleedingRates = {
+    Critical = {amount = 75, delay = 0.4},
+    Moderate = {amount = 40, delay = 0.8},
+    Minor = {amount = 15, delay = 1.5}
+}
+
+local BoneBleedingMapping = {
+    -- Critical Bleeding
+    [31086] = BleedingRates.Critical,  -- Head
+    [12844] = BleedingRates.Critical,  -- IK Head
+    [39317] = BleedingRates.Critical,  -- Neck
+    [11816] = BleedingRates.Critical,  -- Pelvis
+    [52301] = BleedingRates.Critical,  -- Thigh
+    [51826] = BleedingRates.Critical,  -- Thigh
+
+    -- Moderate Bleeding
+    [40269] = BleedingRates.Moderate,  -- R Upper Arm
+    [45509] = BleedingRates.Moderate,  -- L Upper Arm
+    [28252] = BleedingRates.Moderate,  -- R Forearm
+    [61163] = BleedingRates.Moderate,  -- L Forearm
+    [63931] = BleedingRates.Moderate,  -- L Calf
+    [36864] = BleedingRates.Moderate,  -- R Calf
+    [14201] = BleedingRates.Moderate,  -- L Foot
+    [52301] = BleedingRates.Moderate,  -- R Foot
+
+    -- Minor Bleeding
+    [57005] = BleedingRates.Minor,  -- R Hand
+    [18905] = BleedingRates.Minor,  -- L Hand
+    [26610] = BleedingRates.Minor,  -- L Finger
+    [58866] = BleedingRates.Minor,  -- R Finger
+    [20781] = BleedingRates.Minor,  -- R Toe
+    [2108]  = BleedingRates.Minor   -- L Toe
+}
 
 Medical.HitDetection.FillBones = function ()
     Medical.HitDetection.Bones[0] = "SKEL_ROOT"
@@ -253,20 +288,20 @@ Medical.HitDetection.FillWeaponInformation = function ()
         ["weapon_combatpistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
         ["weapon_appistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
         ["weapon_pistol50"] = {damage=70, calibre=Medical.HitDetection.AmmunationInformation['50ae']},
-        ["weapon_snspistol"] = {damage=10, calibre=Medical.HitDetection.AmmunationInformation['.22']},
-        ["weapon_snspistol_mk2"] = {damage=10, calibre=Medical.HitDetection.AmmunationInformation['.22']},
+        ["weapon_snspistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
+        ["weapon_snspistol_mk2"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
         ["weapon_heavypistol"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['.45']},
         ["weapon_vintagepistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
-        ["weapon_marksmanpistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
-        ["weapon_revolver"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['.38']},
+        ["weapon_marksmanpistol"] = {damage=70, calibre=Medical.HitDetection.AmmunationInformation['44mag']},
+        ["weapon_revolver"] = {damage=70, calibre=Medical.HitDetection.AmmunationInformation['44mag']},
         ["weapon_revolver_mk2"] = {damage=70, calibre=Medical.HitDetection.AmmunationInformation['44mag']},
-        ["weapon_doubleaction"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['.38']},
+        ["weapon_doubleaction"] = {damage=70, calibre=Medical.HitDetection.AmmunationInformation['44mag']},
         ["weapon_ceramicpistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
-        ["weapon_navyrevolver"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['.38']},
-        ["weapon_gadgetpistol"] = {damage=10, calibre=Medical.HitDetection.AmmunationInformation['.22']},
-        ["weapon_pistolxm3"] = {damage=10, calibre=Medical.HitDetection.AmmunationInformation['.22']},
+        ["weapon_navyrevolver"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['44mag']},
+        ["weapon_gadgetpistol"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
+        ["weapon_pistolxm3"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
         ["weapon_pumpshotgun"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
-        ["weapon_pumpshotgun_mk2"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['20g']},
+        ["weapon_pumpshotgun_mk2"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
         ["weapon_sawnoffshotgun"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
         ["weapon_assaultshotgun"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
         ["weapon_bullpupshotgun"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
@@ -276,28 +311,28 @@ Medical.HitDetection.FillWeaponInformation = function ()
         ["weapon_combatshotgun"] = {damage=85, calibre=Medical.HitDetection.AmmunationInformation['12g']},
         ["weapon_assaultrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
         ["weapon_assaultrifle_mk2"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_carbinerifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_carbinerifle_mk2"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_advancedrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_specialcarbine"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_specialcarbine_mk2"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
+        ["weapon_carbinerifle"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_carbinerifle_mk2"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_advancedrifle"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_specialcarbine"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_specialcarbine_mk2"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
         ["weapon_bullpuprifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
         ["weapon_bullpuprifle_mk2"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
         ["weapon_compactrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_militaryrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_heavyrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_tacticalrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_mg"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
+        ["weapon_militaryrifle"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_heavyrifle"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
+        ["weapon_tacticalrifle"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
+        ["weapon_mg"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
         ["weapon_combatmg"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
         ["weapon_combatmg_mk2"] = {damage=35, calibre=Medical.HitDetection.AmmunationInformation['5.56mm']},
         ["weapon_gusenberg"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['.45']},
-        ["weapon_sniperrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_heavysniper"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
+        ["weapon_sniperrifle"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
+        ["weapon_heavysniper"] = {damage=100, calibre=Medical.HitDetection.AmmunationInformation['50bmg']},
         ["weapon_heavysniper_mk2"] = {damage=100, calibre=Medical.HitDetection.AmmunationInformation['50bmg']},
-        ["weapon_marksmanrifle"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
-        ["weapon_marksmanrifle_mk2"] = {damage=25, calibre=Medical.HitDetection.AmmunationInformation['9mm']},
-        ["weapon_precisionrifle"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
-        ["weapon_musket"] = {damage=45, calibre=Medical.HitDetection.AmmunationInformation['7.62x39mm']},
+        ["weapon_marksmanrifle"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
+        ["weapon_marksmanrifle_mk2"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
+        ["weapon_precisionrifle"] = {damage=55, calibre=Medical.HitDetection.AmmunationInformation['7.62x51mm']},
+        ["weapon_musket"] = {damage=100, calibre=Medical.HitDetection.AmmunationInformation['50bmg']},
     }
 
     Medical.HitDetection.WeaponInformation['Bluntforce'] = Medical.HitDetection.WeaponInformation['Bluntforce'] or {}
@@ -315,17 +350,15 @@ end
 Medical.HitDetection.FillAmmunationInformation = function ()
     -- In M/s
     -- These are just approximations based on quick google searches, feel free to change any of this
-    Medical.HitDetection.AmmunationInformation['9mm'] = { displayname='9mm', velocity=365.76, grams=8.5, drag=0.25 }
-    Medical.HitDetection.AmmunationInformation['.22'] = { displayname='.22LR',velocity=330, grams=2.6, drag=0.24 }
-    Medical.HitDetection.AmmunationInformation['.45'] = { displayname='.45 ACP',velocity=253, grams=15, drag=0.30 }
-    Medical.HitDetection.AmmunationInformation['.38'] = { displayname='.38 Special',velocity=290, grams=10.2, drag=0.28 } -- Based off the .38 S&W Special
-    Medical.HitDetection.AmmunationInformation['44mag'] = { displayname='.44 Magnum',velocity=360, grams=15.5, drag=0.32 }
-    Medical.HitDetection.AmmunationInformation['50ae'] = { displayname='.50 Action Express',velocity=370, grams=26, drag=0.33 } -- 400 gr (26 g) TII WFNGC
-    Medical.HitDetection.AmmunationInformation['12g'] = { displayname='12 Gauge',velocity=480, grams=28.3, drag=0.40 } 
-    Medical.HitDetection.AmmunationInformation['20g'] = { displayname='20 Gauge',velocity=370, grams=25, drag=0.38 } 
-    Medical.HitDetection.AmmunationInformation['7.62x39mm'] = { displayname='7.62x39mm',velocity=750, grams=8.1, drag=0.26}  
-    Medical.HitDetection.AmmunationInformation['5.56mm'] = { displayname='5.56x45 NATO',velocity=1000, grams=4, drag=0.23 } 
-    Medical.HitDetection.AmmunationInformation['50bmg'] = { displayname='.50 BMG',velocity=1000, grams=52, drag=0.24 } 
+    Medical.HitDetection.AmmunationInformation['9mm'] = { displayname='9mm', velocity=370, grams=8, drag=0.25 } -- FMJ 124gr (VG)
+    Medical.HitDetection.AmmunationInformation['.45'] = { displayname='.45 ACP',velocity=260, grams=15, drag=0.30 } -- Auto FMJ (VG)
+    Medical.HitDetection.AmmunationInformation['44mag'] = { displayname='.44 Magnum',velocity=492, grams=15.5, drag=0.32 } -- (Drag 0.172) (V)
+    Medical.HitDetection.AmmunationInformation['50ae'] = { displayname='.50 Action Express',velocity=370, grams=26, drag=0.33 } -- 
+    Medical.HitDetection.AmmunationInformation['12g'] = { displayname='12 Gauge',velocity=490, grams=28.4, drag=0.40 } -- Federal Power-Shok Rifled Slugs (VG) (Drag .110)
+    Medical.HitDetection.AmmunationInformation['7.62x51mm'] = { displayname='7.62x51mm',velocity=838, grams=9.65, drag=0.26 } -- M80 Ball (Drag G1 .45 G7 .2) (VG)
+    Medical.HitDetection.AmmunationInformation['7.62x39mm'] = { displayname='7.62x39mm',velocity=710, grams=9.95, drag=0.26}  -- Standard Steel Core (VG)
+    Medical.HitDetection.AmmunationInformation['5.56mm'] = { displayname='5.56x45 NATO',velocity=915, grams=4, drag=0.23 } -- SS109/M855 (Drag G1 .35) (VG)
+    Medical.HitDetection.AmmunationInformation['50bmg'] = { displayname='.50 BMG',velocity=887, grams=43, drag=0.24 } -- M33 Ball (VG) 
 end
 
 Medical.HitDetection.GetLastSourceOfDamage = function ()
@@ -374,30 +407,39 @@ Medical.HitDetection.GotHit = function (victim, culprit, weapon, DamageType)
             _ThrowError("Unable to find weapon information for weapon: " .. WeaponName)
             return
         end
-        local victimCoords = GetEntityCoords(victim)
-        local culpritCoords = GetEntityCoords(culprit)
-        
-        -- This is extremely flawed, I need somebody whos better at math to help me
-        -- The bullet loses an extremely high amount of energy based to its distance when it shouldn't los
-        -- that much
 
-        local Distance = #(victimCoords - culpritCoords)
-        local Velocity = WeaponInformation['calibre']['velocity'] -- Initial velocity (m/s)
-        local Grams = WeaponInformation['calibre']['grams'] -- Bullet mass (grams)
-        local DragCoeffecient = WeaponInformation['calibre']['drag'] -- Drag coefficient
-        
-        local mass = Grams / 1000 -- Convert grams to kg
-        local initialKE = 0.5 * mass * (Velocity * Velocity) -- Initial kinetic energy
-        local MaxDamage =  WeaponInformation['damage']
-        -- drag factor
-        local k = (DragCoeffecient * 0.5) / mass
-        local finalVelocity = Velocity / (1 + k * Distance) -- Smooth quadratic decay
-        
-        -- Compute final kinetic energy
-        local finalKE = 0.5 * mass * (finalVelocity * finalVelocity) * 10000
+        if WeaponType == 'Gun' then
+            local victimCoords = GetEntityCoords(victim)
+            local culpritCoords = GetEntityCoords(culprit)
+            
+            -- This is extremely flawed, I need somebody whos better at math to help me
+            -- The bullet loses an extremely high amount of energy based to its distance when it shouldn't los
+            -- that much
     
-        local FinalDamage = (MaxDamage * (finalKE / initialKE))
-        if FinalDamage > MaxDamage then FinalDamage = MaxDamage end
+            local Distance = #(victimCoords - culpritCoords)
+            local Velocity = WeaponInformation['calibre']['velocity'] -- Initial velocity (m/s)
+            local Grams = WeaponInformation['calibre']['grams'] -- Bullet mass (grams)
+            local DragCoeffecient = WeaponInformation['calibre']['drag'] -- Drag coefficient
+            
+            local mass = Grams / 1000 -- Convert grams to kg
+            local initialKE = 0.5 * mass * (Velocity * Velocity) -- Initial kinetic energy
+            local MaxDamage =  WeaponInformation['damage']
+            -- drag factor
+            local k = DragCoeffecient / (mass * 100)
+            local finalVelocity = (Velocity / ((1 + k) * Distance)*100) -- Smooth quadratic decay
+            
+            -- Compute final kinetic energy
+            local finalKE = 0.5 * mass * (finalVelocity * finalVelocity)
+        
+            local FinalDamage = (MaxDamage * (finalKE / initialKE))
+            if FinalDamage > MaxDamage then FinalDamage = MaxDamage end
+
+            -- Apply bleeding proportional to the damage
+            local Bleeding = BoneBleedingMapping[BoneHit] or BleedingRates.Minor
+
+            Medical.Blood.AddBleeding(Bleeding.amount, Bleeding.delay, BoneHit)
+        end
+
     end
 
 
@@ -417,6 +459,7 @@ Medical.HitDetection.Events.entityDamaged = function (victim, culprit, weapon, b
     -- car but that'll cause issues down the road
 
     if not IsEntityAPed(victim) then return end
+    if victim ~= PlayerPedId() then return end
 
     -- Types: Vehicle, Weapon, Unknown
     local DamageType
