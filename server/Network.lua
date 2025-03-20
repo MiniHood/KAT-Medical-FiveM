@@ -15,10 +15,18 @@ Medical.Network.PlayerHandler = Medical.Network.PlayerHandler or {}
 Medical.Network.PlayerHandler.Callbacks = Medical.Network.PlayerHandler.Callbacks or {}
 
 Medical.Network.Blood = Medical.Network.Blood or {}
+Medical.Network.Blood.Bleeding = Medical.Network.Blood.Bleeding or {}
 Medical.Network.Blood.Callbacks = Medical.Network.Blood.Callbacks or {}
 
-local ins = function (list, value)
-    table.insert(list, value)
+local ins = table.insert
+
+Medical.Network.Blood.Bleeding.Bleed = function (amount, src)
+    for index, ply in ipairs(GetPlayers()) do
+        if ply then
+            print('Sending add bleed effect to ' .. ply)
+            TriggerClientEvent("Medical:Client:AddBleedEffect", ply, amount, src)
+        end
+    end
 end
 
 Medical.Network.CreateCallbackTables = function ()

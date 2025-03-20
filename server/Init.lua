@@ -92,6 +92,7 @@ local function Init()
         end
     end
 
+    CreateThread(Medical.Blood.ManageBleeding)
 
     print("Fully Loaded")
 end

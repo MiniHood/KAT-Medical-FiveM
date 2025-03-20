@@ -3,6 +3,10 @@ Medical.Network = Medical.Network or {}
 Medical.Network.Blood = Medical.Network.Blood or {} 
 Medical.Network.HitDetection = Medical.Network.HitDetection or {}
 Medical.Network.PlayerHandler = Medical.Network.PlayerHandler or {}
+Medical.Network.EventHandlers = Medical.Network.EventHandlers or {}
+
+Medical.Blood = Medical.Blood or Medical.WaitFor('Blood')
+local ins = table.insert
 
 
 Medical.Network.Blood.AddBlood = function (amt)
@@ -31,6 +35,10 @@ Medical.Network.PlayerHandler.RequestPlayerData = function (playerID)
         args = {playerID}
     }
     return CallbackData
+end
+
+Medical.Network.CreateEventHandlers = function ()
+    ins(Medical.Network.EventHandlers, { 'Medical:Client:AddBleedEffect', Medical.Blood.AddBleedEffect })
 end
 
 Medical.ConfirmLoaded('Network')

@@ -62,4 +62,10 @@ Medical.Blood.AddBleeding = function (amount, delay, bone)
     Medical.Network.Blood.AddBleeding(amount, delay, bone)
 end
 
+Medical.Blood.AddBleedEffect = function (amt, ply)
+    local src = source
+    local pos = GetEntityCoords(src)
+    AddDecal(1010, pos.x, pos.y, pos.z, 0.0, 0.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0)
+end
+
 Medical.ConfirmLoaded('Blood')

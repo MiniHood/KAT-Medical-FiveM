@@ -21,6 +21,14 @@ Medical.WaitFor = function(key)
     return Medical[key]
 end
 
+
+local SetupEventHandlers = function ()
+    for _, value in ipairs(Medical.Network.EventHandlers) do
+        RegisterNetEvent(value[1])
+        AddEventHandler(value[1], value[2])
+    end
+end
+
 local function Init()
 
     -- Wait for all modules to load
@@ -44,12 +52,17 @@ local function Init()
         Medical.Threading.TerminateAllThreads()
     end)
 
-    -- Now for base plate modules
-    Medical.HitDetection.FillBones()
-    Medical.HitDetection.FillWeaponHashes()
-    Medical.HitDetection.FillAmmunationInformation()
-    Medical.HitDetection.FillWeaponInformation()
-    Medical.HitDetection.SetupEvents()
+    Medical.Network.CreateEventHandlers()
+    SetupEventHandlers()
+
+        -- Now for base plate modules
+        Medical.HitDetection.FillBones()
+        Medical.HitDetection.FillWeaponHashes()
+        Medical.HitDetection.FillAmmunationInformation()
+        Medical.HitDetection.FillWeaponInformation()
+        Medical.HitDetection.SetupEvents()
+    
+    
 end
 
 Init()

@@ -11,12 +11,13 @@ Players = {
         Baseplate = {
             Blood = 5000,
             Bleeding = {
-                [threadID] = {
+                [bone] = {
                     amount = 2, -- 2ml
                     delay = 1000, -- 1s per losing 2ml
-                    bone = "HEAD", -- Blood is being lost from the head
+                    lastTick = 0, -- Last tick time
                 }
-            }
+            },
+
         }
     }
 }
