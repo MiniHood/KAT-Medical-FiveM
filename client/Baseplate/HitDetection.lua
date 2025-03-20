@@ -425,7 +425,7 @@ Medical.HitDetection.GotHit = function (victim, culprit, weapon, DamageType)
             local initialKE = 0.5 * mass * (Velocity * Velocity) -- Initial kinetic energy
             local MaxDamage =  WeaponInformation['damage']
             -- drag factor
-            local k = DragCoeffecient / (mass * 100)
+            local k = DragCoeffecient / (mass * 1000)
             local finalVelocity = (Velocity / ((1 + k) * Distance)*100) -- Smooth quadratic decay
             
             -- Compute final kinetic energy
@@ -433,6 +433,8 @@ Medical.HitDetection.GotHit = function (victim, culprit, weapon, DamageType)
         
             local FinalDamage = (MaxDamage * (finalKE / initialKE))
             if FinalDamage > MaxDamage then FinalDamage = MaxDamage end
+
+            print("FinalKE: " .. finalKE .. ' InitialKE: '.. initialKE .. ' Final Damage: ' .. FinalDamage .. ' Distance: ' .. Distance .. ' k: ' .. k .. ' Final Velocity: ' .. finalVelocity .. ' Mass: ' .. mass .. ' DragcoEffecient: ' .. DragCoeffecient)
 
             -- Apply bleeding proportional to the damage
             local Bleeding = BoneBleedingMapping[BoneHit] or BleedingRates.Minor
@@ -459,7 +461,7 @@ Medical.HitDetection.Events.entityDamaged = function (victim, culprit, weapon, b
     -- car but that'll cause issues down the road
 
     if not IsEntityAPed(victim) then return end
-    if victim ~= PlayerPedId() then return end
+    --if victim ~= PlayerPedId() then return end
 
     -- Types: Vehicle, Weapon, Unknown
     local DamageType
